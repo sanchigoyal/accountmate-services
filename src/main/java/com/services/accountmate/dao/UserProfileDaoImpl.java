@@ -7,7 +7,7 @@ import javax.persistence.TypedQuery;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.services.accountmate.bean.UserProfile;
+import com.services.accountmate.bean.UserProfileEntity;
 import com.services.accountmate.exception.ResourceNotFoundException;
 
 /**
@@ -30,11 +30,11 @@ public class UserProfileDaoImpl implements UserProfileDao{
 	 * @throws ResourceNotFoundException
 	 */
 	@Override
-	public UserProfile getUserProfile(String userName) throws ResourceNotFoundException{
+	public UserProfileEntity getUserProfile(String userName) throws ResourceNotFoundException{
 		try {
-			String qString = "SELECT u FROM UserProfile u WHERE u.userName = ?1";
+			String qString = "SELECT u FROM UserProfileEntity u WHERE u.userName = ?1";
 			
-			TypedQuery<UserProfile> query = entityManager.createQuery(qString, UserProfile.class);		
+			TypedQuery<UserProfileEntity> query = entityManager.createQuery(qString, UserProfileEntity.class);		
 			query.setParameter(1, userName);
 
 			return query.getSingleResult();
@@ -50,9 +50,9 @@ public class UserProfileDaoImpl implements UserProfileDao{
 	 * @return UserProfile
 	 */
 	@Override
-	public UserProfile createUserProfile(UserProfile user) {
+	public UserProfileEntity createUserProfile(UserProfileEntity user) {
 		
-		UserProfile createdUser = entityManager.merge(user);
+		UserProfileEntity createdUser = entityManager.merge(user);
 		entityManager.flush();
 		return createdUser;
 	}
@@ -65,14 +65,28 @@ public class UserProfileDaoImpl implements UserProfileDao{
 	 * @throws ResourceNotFoundException
 	 */
 	@Override
-	public UserProfile updateUserProfile(UserProfile user) throws ResourceNotFoundException {
+	public UserProfileEntity updateUserProfile(UserProfileEntity user) throws ResourceNotFoundException {
 		
-		// if not exist throw not found exception
-		if(entityManager.find(UserProfile.class, user.getUserID()) == null){
-			throw new ResourceNotFoundException("UserProfile resource with userId - "+user.getUserID()+" was not found.");
+		UserProfileEntity currentUser = new UserProfileEntity();
+		UserProfileEntity updatedUser = new UserProfileEntity();
+		try{
+			
+			/* check if user exists before deleting */
+			String qString = "SELECT u FROM UserProfileEntity u WHERE u.userUUID = ?1";
+			TypedQuery<UserProfileEntity> query = entityManager.createQuery(qString, UserProfileEntity.class);		
+			query.setParameter(1, user.getUserUUID());
+			currentUser = query.getSingleResult();
+			
+			/* updated user id if anything passed as dummy in the request */
+			user.setUserID(currentUser.getUserID());
+			
+			/* update the resource */
+			updatedUser = entityManager.merge(user);
+			
+		}catch (NoResultException e) {
+			throw new ResourceNotFoundException("UserProfile resource with userUUID - "+user.getUserUUID()+" was not found.");
 		}
 		
-		UserProfile updatedUser = entityManager.merge(user);
 		return updatedUser;
 	}
 	
@@ -84,14 +98,23 @@ public class UserProfileDaoImpl implements UserProfileDao{
 	 * @throws ResourceNotFoundException
 	 */
 	@Override
-	public UserProfile deleteUserProfile(int userId) throws ResourceNotFoundException{
-
-		UserProfile deletedUser = entityManager.find(UserProfile.class, userId);
-		if(deletedUser == null){
-			throw new ResourceNotFoundException("UserProfile resource with userId - "+userId+" was not found.");
+	public UserProfileEntity deleteUserProfile(String userUUID) throws ResourceNotFoundException{
+		UserProfileEntity deletedUser = new UserProfileEntity();
+		try{
+			
+			/* check if user exists before deleting */
+			String qString = "SELECT u FROM UserProfileEntity u WHERE u.userUUID = ?1";
+			TypedQuery<UserProfileEntity> query = entityManager.createQuery(qString, UserProfileEntity.class);		
+			query.setParameter(1, userUUID);
+			deletedUser = query.getSingleResult();
+			
+			/* delete the resource */
+			entityManager.remove(deletedUser);
+			
+		}catch (NoResultException e) {
+			throw new ResourceNotFoundException("UserProfile resource with userUUID - "+userUUID+" was not found.");
 		}
-		
-		entityManager.remove(deletedUser);
+	
 		return deletedUser;
 	}
 

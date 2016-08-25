@@ -1,61 +1,69 @@
 package com.services.accountmate.bean;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 import org.apache.commons.beanutils.BeanUtils;
 
+
 /**
- * User Profile POJO
+ * User Profile Entity
  * 
  * @author Sanchi
  *
  */
-@XmlRootElement
 
-public class UserProfile {
+@Entity
+@Table(name="USER")
+public class UserProfileEntity {
 	
 	/** unique id of user */
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "USER_ID")
 	private int userID;
 	
 	/** unique nickname of user */
+	@Column(name = "USER_NAME")
 	private String userName;
 	
 	/** email address of user */
+	@Column(name = "EMAIL")
 	private String email;
 	
 	/** encrypted password */
+	@Column(name = "PASSWORD")
 	private String password;
 	
 	/** password decryption key */
+	@Column(name = "SALT")
 	private String salt;
 	
 	/** user first name */
+	@Column(name = "FIRST_NAME")
 	private String firstName;
 	
 	/** user last name */
+	@Column(name = "LAST_NAME")
 	private String lastName;
 	
 	/** user date of registration */
+	@Column(name = "DATE_OF_REGISTRATION")
 	private Date dateOfRegistration;
 	
 	/** user last login */
+	@Column(name = "LAST_LOGIN")
 	private Date lastLogin;
 	
 	/** user UUID for URL */
+	@Column(name = "USER_UUID")
 	private String userUUID;
-	
-	/** list of links */
-	/* initializing this now helps to avoid extra lines of code later */
-	List<Link> links = new ArrayList<Link>();
-	
-	public void addLink(String link, String rel){
-		this.links.add(new Link(link, rel));
-	}
 	
 	/*
 	 * this establishes one-to-many relationship
@@ -69,20 +77,11 @@ public class UserProfile {
 //	@OneToMany(mappedBy="user", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 //	List<Company> companies;
 	
-	
-	public List<Link> getLinks() {
-		return links;
-	}
-
-	public void setLinks(List<Link> links) {
-		this.links = links;
-	}
-
-	public UserProfile(UserProfileEntity entity) throws IllegalAccessException, InvocationTargetException{
-		BeanUtils.copyProperties(this, entity);
+	public UserProfileEntity(UserProfile bean) throws IllegalAccessException, InvocationTargetException{
+		BeanUtils.copyProperties(this, bean);
 	}
 	
-	public UserProfile(int userId, String userName, String email, String password, 
+	public UserProfileEntity(int userId, String userName, String email, String password, 
 			String salt, String firstName,String lastName, Date dateOfRegistration,
 			Date lastLogin, String userUUID){
 		this.userID = userId;
@@ -98,7 +97,7 @@ public class UserProfile {
 		
 	}
 	
-	public UserProfile(){
+	public UserProfileEntity(){
 		
 	}
 	
@@ -108,6 +107,7 @@ public class UserProfile {
 //	public void setCompanies(List<Company> companies) {
 //		this.companies = companies;
 //	}
+	
 	public int getUserID() {
 		return userID;
 	}

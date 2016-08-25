@@ -1,19 +1,19 @@
 package com.services.accountmate.dao;
 
-import com.services.accountmate.bean.UserProfile;
+import com.services.accountmate.bean.UserProfileEntity;
 import com.services.accountmate.exception.ResourceNotFoundException;
 
 public interface UserProfileDao {
 	
 	/** method to retrieve a UserProfile */
-	public UserProfile getUserProfile(String userName) throws ResourceNotFoundException;
+	public UserProfileEntity getUserProfile(String userName) throws ResourceNotFoundException;
 	
 	/** method to create a new UserProfile resource */
-	public UserProfile createUserProfile(UserProfile user);
+	public UserProfileEntity createUserProfile(UserProfileEntity user);
 
 	/** method to update a UserProfile resource */
-	public UserProfile updateUserProfile(UserProfile user) throws ResourceNotFoundException;
+	public UserProfileEntity updateUserProfile(UserProfileEntity user) throws ResourceNotFoundException;
 
 	/** method to delete a UserProfile resource */
-	public UserProfile deleteUserProfile(int userId) throws ResourceNotFoundException;
+	public UserProfileEntity deleteUserProfile(String userUUID) throws ResourceNotFoundException;
 }

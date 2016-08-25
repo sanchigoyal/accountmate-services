@@ -4,7 +4,10 @@ import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.spring.scope.RequestContextFilter;
 
+import com.services.accountmate.exception.BeanEntityConversionExceptionMapper;
 import com.services.accountmate.exception.GenericExceptionMapper;
+import com.services.accountmate.exception.InvalidCredentialException;
+import com.services.accountmate.exception.InvalidCredentialExceptionMapper;
 import com.services.accountmate.exception.ResourceNotFoundExceptionMapper;
 import com.services.accountmate.resource.UserProfileResource;
 
@@ -30,6 +33,8 @@ public class AccountmateWSApplication extends ResourceConfig {
 		
 		// register exception mapper
 		register(ResourceNotFoundExceptionMapper.class);
+		register(BeanEntityConversionExceptionMapper.class);
+		register(InvalidCredentialExceptionMapper.class);
 		register(GenericExceptionMapper.class);
 		
 		// register features
