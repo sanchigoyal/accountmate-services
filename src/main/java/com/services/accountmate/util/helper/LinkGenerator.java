@@ -2,6 +2,7 @@ package com.services.accountmate.util.helper;
 
 import javax.ws.rs.core.UriInfo;
 
+import com.services.accountmate.resource.CompanyResource;
 import com.services.accountmate.resource.UserProfileResource;
 
 public class LinkGenerator {
@@ -17,5 +18,18 @@ public class LinkGenerator {
 		/* this helps to bind the url properly */
 		url = url.replace(" ", "%20");
 		return url;
+	}
+	
+	public static String getCompanyResourceLink(UriInfo uriInfo, int companyId){
+		return uriInfo.getBaseUriBuilder()
+				.path(CompanyResource.class)
+				.path(String.valueOf(companyId))
+				.build().toString();
+	}
+
+	public static String getCompanyResourceLink(UriInfo uriInfo) {
+		return uriInfo.getBaseUriBuilder()
+				.path(CompanyResource.class)
+				.build().toString();
 	}
 }

@@ -57,18 +57,6 @@ public class UserProfile {
 		this.links.add(new Link(link, rel));
 	}
 	
-	/*
-	 * this establishes one-to-many relationship
-	 * @JsonBackReference and @JsonManagedReference helps to avoid cyclic Json serialization error
-	 * Fetch Type - Lazy fetched data only when the variable is referred 
-	 * Cascade ALL cascades all operation to child as well
-	 * 
-	 */
-	
-//	@JsonManagedReference
-//	@OneToMany(mappedBy="user", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
-//	List<Company> companies;
-	
 	
 	public List<Link> getLinks() {
 		return links;
@@ -102,12 +90,6 @@ public class UserProfile {
 		
 	}
 	
-//	public List<Company> getCompanies() {
-//		return companies;
-//	}
-//	public void setCompanies(List<Company> companies) {
-//		this.companies = companies;
-//	}
 	public int getUserID() {
 		return userID;
 	}

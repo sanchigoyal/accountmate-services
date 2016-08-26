@@ -38,14 +38,22 @@
     	    <property name="resourceRef" value="true" />
     	</bean>
     	
+    	<!-- User Resource -->
     	<bean id="userDAO" class="com.services.accountmate.dao.UserProfileDaoImpl"></bean>
-    	
     	<bean id="userService" class="com.services.accountmate.service.UserServiceImpl">
     		<property name="userDAO" ref="userDAO"/>
     	</bean>
-    	
     	<bean id="userResource" class="com.services.accountmate.resource.UserProfileResource">
     		<property name="userService" ref="userService"/>
+    	</bean>
+    	
+    	<!-- Company Resource -->
+    	<bean id="companyDAO" class="com.services.accountmate.dao.CompanyDaoImpl"></bean>
+    	<bean id="companyService" class="com.services.accountmate.service.CompanyServiceImpl">
+    		<property name="companyDAO" ref="companyDAO"/>
+    	</bean>
+    	<bean id="companyResource" class="com.services.accountmate.resource.CompanyResource">
+    		<property name="companyService" ref="companyService"/>
     	</bean>
     	
 </beans>

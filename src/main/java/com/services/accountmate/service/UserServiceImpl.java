@@ -41,12 +41,9 @@ public class UserServiceImpl implements UserService {
 		
 		try{	
 			user = new UserProfile(userDAO.getUserProfile(userName));
-		}catch(IllegalAccessException iae){
-			LOGGER.error(iae.getMessage(), iae);
-			throw new BeanEntityConversionException(iae.getMessage());
-		}catch(InvocationTargetException ite){
-			LOGGER.error(ite.getMessage(), ite);
-			throw new BeanEntityConversionException(ite.getMessage());
+		}catch(IllegalAccessException | InvocationTargetException e ){
+			LOGGER.error(e.getMessage(), e);
+			throw new BeanEntityConversionException(e.getMessage());
 		}
 		return user;
 	}
@@ -60,12 +57,9 @@ public class UserServiceImpl implements UserService {
 		try{
 			entity = new UserProfileEntity(user);
 			createdUser = new UserProfile(userDAO.createUserProfile(entity));
-		}catch(IllegalAccessException iae){
-			LOGGER.error(iae.getMessage(), iae);
-			throw new BeanEntityConversionException(iae.getMessage());
-		}catch(InvocationTargetException ite){
-			LOGGER.error(ite.getMessage(), ite);
-			throw new BeanEntityConversionException(ite.getMessage());
+		}catch(IllegalAccessException | InvocationTargetException e ){
+			LOGGER.error(e.getMessage(), e);
+			throw new BeanEntityConversionException(e.getMessage());
 		}
 		
 		return createdUser;
@@ -80,13 +74,11 @@ public class UserServiceImpl implements UserService {
 		try{
 			entity = new UserProfileEntity(user);
 			updatedUser = new UserProfile(userDAO.updateUserProfile(entity));
-		}catch(IllegalAccessException iae){
-			LOGGER.error(iae.getMessage(), iae);
-			throw new BeanEntityConversionException(iae.getMessage());
-		}catch(InvocationTargetException ite){
-			LOGGER.error(ite.getMessage(), ite);
-			throw new BeanEntityConversionException(ite.getMessage());
+		}catch(IllegalAccessException | InvocationTargetException e ){
+			LOGGER.error(e.getMessage(), e);
+			throw new BeanEntityConversionException(e.getMessage());
 		}
+		
 		return updatedUser;
 	}
 
@@ -96,12 +88,9 @@ public class UserServiceImpl implements UserService {
 		UserProfile deletedUser = new UserProfile();
 		try{
 			deletedUser = new UserProfile(userDAO.deleteUserProfile(userUUID));
-		}catch(IllegalAccessException iae){
-			LOGGER.error(iae.getMessage(), iae);
-			throw new BeanEntityConversionException(iae.getMessage());
-		}catch(InvocationTargetException ite){
-			LOGGER.error(ite.getMessage(), ite);
-			throw new BeanEntityConversionException(ite.getMessage());
+		}catch(IllegalAccessException | InvocationTargetException e ){
+			LOGGER.error(e.getMessage(), e);
+			throw new BeanEntityConversionException(e.getMessage());
 		}
 		
 		return deletedUser;
@@ -121,6 +110,8 @@ public class UserServiceImpl implements UserService {
 	public void addLink(UserProfile user, UriInfo uriInfo) {
 		/* add link to self */
 		user.addLink(LinkGenerator.getUserProfileResourceLink(uriInfo, user.getUserName(), user.getPassword()), "self");
+		/* add link to companies */
+		user.addLink(LinkGenerator.getCompanyResourceLink(uriInfo), "companies");
 	}
 
 }

@@ -137,13 +137,4 @@ public class UserProfileResource {
 				.entity(deletedUser)
 				.build();
 	}
-	
-	/**
-	 * Delegate the call to Company Resource
-	 * @return
-	 */
-	@Path("/{userId}/companies")
-	public CompanyResource getCompanyResource(){
-		return new CompanyResource();
-	}
 }

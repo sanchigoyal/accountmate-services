@@ -9,6 +9,7 @@ import com.services.accountmate.exception.GenericExceptionMapper;
 import com.services.accountmate.exception.InvalidCredentialException;
 import com.services.accountmate.exception.InvalidCredentialExceptionMapper;
 import com.services.accountmate.exception.ResourceNotFoundExceptionMapper;
+import com.services.accountmate.resource.CompanyResource;
 import com.services.accountmate.resource.UserProfileResource;
 
 
@@ -27,6 +28,7 @@ public class AccountmateWSApplication extends ResourceConfig {
 		
 		// register application resources
 		register(UserProfileResource.class);
+		register(CompanyResource.class);
 	
 		// register filters
 		register(RequestContextFilter.class);
