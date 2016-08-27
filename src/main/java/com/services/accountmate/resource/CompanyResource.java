@@ -22,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.services.accountmate.bean.Company;
 import com.services.accountmate.service.CompanyService;
-import com.services.accountmate.service.UserServiceImpl;
 
 @Path("/companies")
 public class CompanyResource {
@@ -68,6 +67,7 @@ public class CompanyResource {
 		
 		company.setUserUUID(userUUID);
 		Company createdCompany = companyService.createCompany(company);
+		companyService.addLinks(uriInfo, createdCompany);
 		
 		return Response.created(uriInfo.getAbsolutePathBuilder()
 								.path(String.valueOf(company.getCompanyID()))
@@ -80,15 +80,29 @@ public class CompanyResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/{companyId}")
-	public Company updateCompany(Company company){
-		return null;
+	public Response updateCompany(Company company, @HeaderParam("User-UUID") String userUUID, 
+			@PathParam("companyId") int companyId, @Context UriInfo uriInfo){
+		
+		company.setCompanyID(companyId);
+		company.setUserUUID(userUUID);
+		Company updatedCompany = companyService.updateCompany(company);
+		companyService.addLinks(uriInfo, updatedCompany);
+		
+		return Response.status(Status.OK).entity(updatedCompany)
+				.header("Location", uriInfo.getAbsolutePathBuilder()
+						.path(String.valueOf(updatedCompany.getCompanyID())))
+				.build();
 	}
 	
 	@DELETE
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/{companyId}")
-	public Company deleteCompany(Company company){
-		return null;
+	public Response deleteCompany(@HeaderParam("User-UUID") String userUUID, 
+			@PathParam("companyId") int companyId, @Context UriInfo uriInfo){
+		
+		Company deletedCompany = companyService.deleteCompany(userUUID, companyId);
+		
+		return Response.status(Status.OK).entity(deletedCompany).build();
 	}
 }

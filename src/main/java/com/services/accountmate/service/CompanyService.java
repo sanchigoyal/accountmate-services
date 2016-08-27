@@ -1,6 +1,5 @@
 package com.services.accountmate.service;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import javax.ws.rs.core.UriInfo;
@@ -18,5 +17,9 @@ public interface CompanyService {
 	void addLinks(UriInfo uriInfo, Company company);
 
 	Company createCompany(Company company);
+
+	Company updateCompany(Company company);
+
+	Company deleteCompany(String userUUID, int companyId);
 
 }

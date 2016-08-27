@@ -102,8 +102,44 @@ public class CompanyServiceImpl implements CompanyService{
 
 	@Override
 	public Company createCompany(Company company) {
-		// TODO Auto-generated method stub
-		return null;
+		Company createdCompany = null;
+		CompanyEntity entity = null;	
+		try {
+			entity = new CompanyEntity(company);
+			createdCompany = new Company(companyDAO.createCompany(entity));
+		} catch (IllegalAccessException | InvocationTargetException e) {
+			LOGGER.error(e.getMessage(),e);
+			throw new BeanEntityConversionException(e.getMessage());
+		}
+		return createdCompany;
+	}
+
+
+	@Override
+	public Company updateCompany(Company company) {
+		Company updatedCompany = null;
+		CompanyEntity entity = null;	
+		try {
+			entity = new CompanyEntity(company);
+			updatedCompany = new Company(companyDAO.updateCompany(entity));
+		} catch (IllegalAccessException | InvocationTargetException e) {
+			LOGGER.error(e.getMessage(),e);
+			throw new BeanEntityConversionException(e.getMessage());
+		}
+		return updatedCompany;
+	}
+
+
+	@Override
+	public Company deleteCompany(String userUUID, int companyId) {
+		Company deletedCompany = null;	
+		try {
+			deletedCompany = new Company(companyDAO.deleteCompany(userUUID, companyId));
+		} catch (IllegalAccessException | InvocationTargetException e) {
+			LOGGER.error(e.getMessage(),e);
+			throw new BeanEntityConversionException(e.getMessage());
+		}
+		return deletedCompany;
 	}
 	
 }

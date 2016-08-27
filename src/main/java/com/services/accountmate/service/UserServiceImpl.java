@@ -11,7 +11,6 @@ import com.services.accountmate.bean.UserProfile;
 import com.services.accountmate.bean.UserProfileEntity;
 import com.services.accountmate.dao.UserProfileDao;
 import com.services.accountmate.exception.BeanEntityConversionException;
-import com.services.accountmate.exception.InvalidCredentialException;
 import com.services.accountmate.exception.ResourceNotFoundException;
 import com.services.accountmate.util.helper.LinkGenerator;
 
@@ -51,8 +50,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserProfile createUserProfile(UserProfile user) throws BeanEntityConversionException {
-		UserProfileEntity entity = new UserProfileEntity();
-		UserProfile createdUser = new UserProfile();
+		UserProfileEntity entity = null;
+		UserProfile createdUser = null;
 		
 		try{
 			entity = new UserProfileEntity(user);

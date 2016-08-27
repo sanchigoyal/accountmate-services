@@ -6,7 +6,6 @@ import org.glassfish.jersey.server.spring.scope.RequestContextFilter;
 
 import com.services.accountmate.exception.BeanEntityConversionExceptionMapper;
 import com.services.accountmate.exception.GenericExceptionMapper;
-import com.services.accountmate.exception.InvalidCredentialException;
 import com.services.accountmate.exception.InvalidCredentialExceptionMapper;
 import com.services.accountmate.exception.ResourceNotFoundExceptionMapper;
 import com.services.accountmate.resource.CompanyResource;

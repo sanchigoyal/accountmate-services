@@ -9,9 +9,7 @@ import javax.persistence.TypedQuery;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.services.accountmate.bean.Company;
 import com.services.accountmate.bean.CompanyEntity;
-import com.services.accountmate.bean.UserProfileEntity;
 import com.services.accountmate.exception.ResourceNotFoundException;
 
 @Transactional
@@ -45,6 +43,56 @@ public class CompanyDaoImpl implements CompanyDao {
 		} catch (NoResultException e) {
 			throw new ResourceNotFoundException("Company resource with ID - "+companyId+" was not found.");
 		}
+	}
+
+	@Override
+	public CompanyEntity createCompany(CompanyEntity entity) {
+		CompanyEntity createdCompany = entityManager.merge(entity);
+		entityManager.flush();
+		return createdCompany;
+	}
+
+	@Override
+	public CompanyEntity updateCompany(CompanyEntity entity) {
+		CompanyEntity updatedCompany = null;
+		try{
+			
+			/* check if user exists before deleting */
+			String qString = "SELECT c FROM CompanyEntity c WHERE c.companyID= ?1 and c.userUUID = ?2";
+			TypedQuery<CompanyEntity> query = entityManager.createQuery(qString, CompanyEntity.class);		
+			query.setParameter(1, entity.getCompanyID());
+			query.setParameter(2, entity.getUserUUID());
+			query.getSingleResult();
+			
+			/* update the resource */
+			updatedCompany = entityManager.merge(entity);
+			
+		}catch (NoResultException e) {
+			throw new ResourceNotFoundException("Company resource with ID - "+entity.getCompanyID()+" was not found.");
+		}
+		
+		return updatedCompany;
+	}
+
+	@Override
+	public CompanyEntity deleteCompany(String userUUID, int companyId) {
+		CompanyEntity deletedCompany = null;
+		try{
+			
+			/* check if user exists before deleting */
+			String qString = "SELECT c FROM CompanyEntity c WHERE c.companyID= ?1 and c.userUUID = ?2";
+			TypedQuery<CompanyEntity> query = entityManager.createQuery(qString, CompanyEntity.class);		
+			query.setParameter(1, companyId);
+			query.setParameter(2, userUUID);
+			deletedCompany = query.getSingleResult();
+			
+			entityManager.remove(deletedCompany);
+			
+		}catch (NoResultException e) {
+			throw new ResourceNotFoundException("Company resource with ID - "+companyId+" was not found.");
+		}
+		
+		return deletedCompany;
 	}
 
 }
