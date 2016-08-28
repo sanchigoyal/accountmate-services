@@ -3,6 +3,7 @@ package com.services.accountmate.util.helper;
 import javax.ws.rs.core.UriInfo;
 
 import com.services.accountmate.resource.CompanyResource;
+import com.services.accountmate.resource.UOMResource;
 import com.services.accountmate.resource.UserProfileResource;
 
 public class LinkGenerator {
@@ -31,5 +32,19 @@ public class LinkGenerator {
 		return uriInfo.getBaseUriBuilder()
 				.path(CompanyResource.class)
 				.build().toString();
+	}
+
+	public static String getUOMResourceLink(UriInfo uriInfo, int uomID) {
+		return uriInfo.getBaseUriBuilder()
+				.path(UOMResource.class)
+				.path(String.valueOf(uomID))
+				.build().toString();
+	}
+	
+	public static String getUOMResourceLink(UriInfo uriInfo){
+		return uriInfo.getBaseUriBuilder()
+				.path(UOMResource.class)
+				.build()
+				.toString();
 	}
 }

@@ -73,7 +73,8 @@ public class CompanyServiceImpl implements CompanyService{
 		Company company;
 		while(iterator.hasNext()){
 			company = iterator.next();
-			company.addLink(LinkGenerator.getCompanyResourceLink(uriInfo, company.getCompanyID()), "self");
+			/* using common method; all links logic consolidated at one place */
+			addLinks(uriInfo, company);
 		}
 		
 	}

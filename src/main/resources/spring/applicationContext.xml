@@ -56,4 +56,12 @@
     		<property name="companyService" ref="companyService"/>
     	</bean>
     	
+    	<!-- UOM Resource -->
+    	<bean id="uomDAO" class="com.services.accountmate.dao.UOMDaoImpl"></bean>
+    	<bean id="uomService" class="com.services.accountmate.service.UOMServiceImpl">
+    		<property name="uomDAO" ref="uomDAO"/>
+    	</bean>
+    	<bean id="uomResource" class="com.services.accountmate.resource.UOMResource">
+    		<property name="uomService" ref="uomService"/>
+    	</bean>
 </beans>
