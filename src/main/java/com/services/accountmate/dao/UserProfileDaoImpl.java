@@ -30,16 +30,16 @@ public class UserProfileDaoImpl implements UserProfileDao{
 	 * @throws ResourceNotFoundException
 	 */
 	@Override
-	public UserProfileEntity getUserProfile(String userName) throws ResourceNotFoundException{
+	public UserProfileEntity getUserProfile(String email) throws ResourceNotFoundException{
 		try {
-			String qString = "SELECT u FROM UserProfileEntity u WHERE u.userName = ?1";
+			String qString = "SELECT u FROM UserProfileEntity u WHERE u.email = ?1";
 			
 			TypedQuery<UserProfileEntity> query = entityManager.createQuery(qString, UserProfileEntity.class);		
-			query.setParameter(1, userName);
+			query.setParameter(1, email);
 
 			return query.getSingleResult();
 		} catch (NoResultException e) {
-			throw new ResourceNotFoundException("UserProfile resource with userName - "+userName+" was not found.");
+			throw new ResourceNotFoundException("UserProfile resource with email - "+email+" was not found.");
 		}
 	}
 

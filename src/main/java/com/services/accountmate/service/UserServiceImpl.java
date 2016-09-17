@@ -35,11 +35,11 @@ public class UserServiceImpl implements UserService {
 
 
 	@Override
-	public UserProfile getUserProfile(String userName)throws ResourceNotFoundException, BeanEntityConversionException {
+	public UserProfile getUserProfile(String email)throws ResourceNotFoundException, BeanEntityConversionException {
 		UserProfile user = new UserProfile();
 		
 		try{	
-			user = new UserProfile(userDAO.getUserProfile(userName));
+			user = new UserProfile(userDAO.getUserProfile(email));
 		}catch(IllegalAccessException | InvocationTargetException e ){
 			LOGGER.error(e.getMessage(), e);
 			throw new BeanEntityConversionException(e.getMessage());

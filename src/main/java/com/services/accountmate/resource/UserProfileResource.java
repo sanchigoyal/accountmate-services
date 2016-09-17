@@ -58,13 +58,13 @@ public class UserProfileResource {
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getUser(@QueryParam("username")String userName, @QueryParam("password") String password, @Context UriInfo uriInfo){
+	public Response getUser(@QueryParam("email")String email, @QueryParam("password") String password, @Context UriInfo uriInfo){
 		UserProfile user = new UserProfile();
 		try{
-			user = userService.getUserProfile(userName);
+			user = userService.getUserProfile(email);
 			
 			/* validate user credential */
-			if(!userService.validate(user,password)){
+			if(!userService.validate(user, password)){
 				throw new InvalidCredentialException("User credentials are invalid");
 			}
 			
